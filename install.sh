@@ -1,6 +1,8 @@
 #!/bin/sh
-# EPM Automate installer — one command on Windows, Linux, and macOS:
+# EPM Automate installer — Unix:
 #   curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
+# Windows PowerShell / cmd (no sh):
+#   powershell -ExecutionPolicy Bypass -c "irm https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.ps1 | iex"
 #
 # Detects the OS, downloads the matching client from a Cloud EPM environment,
 # then either launches the Windows GUI installer or fully installs on Unix.
@@ -31,6 +33,9 @@ Usage:
   curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
   curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh -s -- [options]
   sh install.sh [options]
+
+  Windows (PowerShell or cmd, no Git):
+  powershell -ExecutionPolicy Bypass -c "irm https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.ps1 | iex"
 
 The script detects the OS:
   Windows (Git Bash / MSYS / Cygwin)

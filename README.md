@@ -1,50 +1,52 @@
 # EPM Automate installer
 
-One script. One command. It detects Windows vs Linux/macOS and installs the matching Oracle EPM Automate client.
+Windows does not ship `sh`, so `curl | sh` cannot run in PowerShell. Use the native runner for your OS. Both pull the same client from your Cloud EPM environment.
+
+**Linux / macOS / WSL / Git Bash**
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
 ```
 
-From a clone:
+**Windows PowerShell or Command Prompt** (no Git required)
 
-```sh
-sh install.sh
+```powershell
+powershell -ExecutionPolicy Bypass -c "irm https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.ps1 | iex"
 ```
 
-On Windows use **Git Bash** (or any environment that has `curl` and `sh`). Paste the same line. WSL is treated as Linux and gets the Unix install, which is what you want on WSL.
+That PowerShell line is the Windows equivalent of `curl | sh`: it works in PowerShell and in `cmd.exe`.
+
+From a clone: `sh install.sh` (Unix) or `powershell -ExecutionPolicy Bypass -File .\install.ps1` (Windows).
 
 ## What it does
 
-Oracle does not publish EPM Automate on a public CDN. The script pulls the current client from **your Cloud EPM environment** (Settings and Actions → Downloads), then:
+Oracle does not publish EPM Automate on a public CDN. The installer downloads from **your Cloud EPM environment** (Settings and Actions → Downloads), then:
 
 | OS | Action |
 | --- | --- |
 | Windows | Downloads `EPM Automate.exe` and launches the GUI installer (UAC). You walk through the wizard. |
 | Linux / macOS | Ensures Java 17, extracts `EPMAutomate.tar`, puts `epmautomate` on your `PATH`, and runs `epmautomate upgrade` when credentials are available. |
 
-## Credentials
+WSL is Linux (tar install), not the Windows exe.
 
-Set these (or the script will prompt when it can read `/dev/tty`):
+## Credentials
 
 ```sh
 export EPM_URL='https://epm-xxx.epm.region.ocs.oraclecloud.com/epmcloud'
 export EPM_USER='you@company.com'
 export EPM_PASSWORD='...'
-curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
 ```
 
-Piped flags work too:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh -s -- --url "$EPM_URL" --user "$EPM_USER"
+```powershell
+$env:EPM_URL = 'https://epm-xxx.epm.region.ocs.oraclecloud.com/epmcloud'
+$env:EPM_USER = 'you@company.com'
+$env:EPM_PASSWORD = '...'
+powershell -ExecutionPolicy Bypass -c "irm https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.ps1 | iex"
 ```
 
-Prefer prompting or `EPM_PASSWORD` over `--password` so the secret is not on the command line.
-
-| Variable | Also | Purpose |
+| Variable | Also (Unix) | Purpose |
 | --- | --- | --- |
-| `EPM_URL` | `--url` | Cloud EPM base URL (required unless `--from-file`) |
+| `EPM_URL` | `--url` | Cloud EPM base URL (required unless a local installer file is set) |
 | `EPM_USER` | `--user` | Identity-domain user |
 | `EPM_PASSWORD` | `--password` | Password |
 | `EPM_DOMAIN` | `--domain` | Classic identity domain (4th `login` argument) |
@@ -58,7 +60,7 @@ Defaults on Unix: `$HOME/.local/oracle/epmautomate` (or `/opt/oracle/epmautomate
 
 ## Notes
 
-- **Java 17** is required on Linux/macOS (Windows bundles a JRE). The script installs OpenJDK 17 via `apt` / `dnf` / `yum` when it can.
+- **Java 17** is required on Linux/macOS (Windows bundles a JRE). The Unix script installs OpenJDK 17 via `apt` / `dnf` / `yum` when it can.
 - **Windows** install requires an administrator. Default path is `Program Files\Oracle\EPM Automate`. After the GUI finishes, run `epmautomate upgrade` from an elevated prompt so the client matches the latest cloud release.
-- **MFA:** Cloud EPM REST basic auth does not work for MFA users. Use a service account without MFA, or download from the UI and pass `--from-file`.
-- Inspect before piping: `curl -fsSL .../install.sh | less`
+- **MFA:** Cloud EPM REST basic auth does not work for MFA users. Use a service account without MFA, or download from the UI and set `EPM_INSTALLER`.
+- Inspect before running: `curl -fsSL .../install.sh | less` or `irm .../install.ps1 | more`
