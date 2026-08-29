@@ -3,10 +3,10 @@
 One script. One command. It detects Windows vs Linux/macOS and installs the matching Oracle EPM Automate client.
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/OWNER/epmautomate-install/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
 ```
 
-Replace `OWNER` with this GitHub user or org after the repo is pushed. From a clone:
+From a clone:
 
 ```sh
 sh install.sh
@@ -31,13 +31,13 @@ Set these (or the script will prompt when it can read `/dev/tty`):
 export EPM_URL='https://epm-xxx.epm.region.ocs.oraclecloud.com/epmcloud'
 export EPM_USER='you@company.com'
 export EPM_PASSWORD='...'
-curl -fsSL https://raw.githubusercontent.com/OWNER/epmautomate-install/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
 ```
 
 Piped flags work too:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/OWNER/epmautomate-install/main/install.sh | sh -s -- --url "$EPM_URL" --user "$EPM_USER"
+curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh -s -- --url "$EPM_URL" --user "$EPM_USER"
 ```
 
 Prefer prompting or `EPM_PASSWORD` over `--password` so the secret is not on the command line.

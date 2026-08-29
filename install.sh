@@ -1,6 +1,6 @@
 #!/bin/sh
 # EPM Automate installer — one command on Windows, Linux, and macOS:
-#   curl -fsSL https://raw.githubusercontent.com/<owner>/epmautomate-install/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
 #
 # Detects the OS, downloads the matching client from a Cloud EPM environment,
 # then either launches the Windows GUI installer or fully installs on Unix.
@@ -28,8 +28,8 @@ usage() {
 Install Oracle EPM Automate from a Cloud EPM environment.
 
 Usage:
-  curl -fsSL <raw-url>/install.sh | sh
-  curl -fsSL <raw-url>/install.sh | sh -s -- [options]
+  curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh
+  curl -fsSL https://raw.githubusercontent.com/chasebank87/epmautomate-install/master/install.sh | sh -s -- [options]
   sh install.sh [options]
 
 The script detects the OS:
